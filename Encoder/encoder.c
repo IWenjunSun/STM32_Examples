@@ -16,14 +16,18 @@ void InitializeEncoder(void)
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_ICInitTypeDef TIM_ICInitStructure;
 	GPIO_InitTypeDef GPIO_InitStructure;
-	//NVIC_InitTypeDef NVIC_InitStructure;
-
+	NVIC_InitTypeDef NVIC_InitStructure;
+	//enable Interrupt, set flag when spinned
+	NVIC_InitStructure.NVIC_IRQChannel=TIM3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 	/* Encoder unit connected to TIM3, 4X mode */
 
 	/* TIM3 clock source enable */
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);
 	/* Enable GPIOA, clock */
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA,ENABLE);
 
 	/* Configure PA.06,07 as encoder input */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
@@ -53,7 +57,7 @@ void InitializeEncoder(void)
 	TIM_ICInit(TIM3, &TIM_ICInitStructure);
 	// Clear all pending interrupts
 	TIM_ClearFlag(TIM3, TIM_FLAG_Update);
-	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+	TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);
 	//ENC_Clear_Speed_Buffer();
 	//Reset counter
 	TIM3->CNT = 0;

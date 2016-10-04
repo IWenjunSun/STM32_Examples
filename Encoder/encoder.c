@@ -4,7 +4,7 @@
  * TIM3 support hardware level encoder input
     It has build in filter to eliminate jitter
     We register the counter count on TI1 and TI2 edge (4 count per spin)
-    It can generate direction signal as well (DIR in TIMx_CR1)
+    It can generate direction signal as well (DIR in TIMx_CR1) (instant)
  * Change Logs:
  * Date           Author       Notes
  * 2016-09-26     Wenjun Sun   the first version
